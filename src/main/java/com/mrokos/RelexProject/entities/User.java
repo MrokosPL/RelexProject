@@ -1,4 +1,4 @@
-package com.mrokos.RelexProject.Entities;
+package com.mrokos.RelexProject.entities;
 
 import jakarta.persistence.*;
 
