@@ -1,8 +1,8 @@
 package com.mrokos.RelexProject.entities;
 
 import jakarta.persistence.*;
+import lombok.Builder;
 
-import javax.management.relation.Role;
 
 @Entity
 @Table(name = "staff")
@@ -13,7 +13,7 @@ public class User {
     private Integer id;
     private String username;
     private String email;
-    private String userPassword;
+    private String password;
 
     @ManyToOne
     @JoinColumn(name = "role_id")
@@ -44,11 +44,11 @@ public class User {
     }
 
     public String getUserPassword() {
-        return userPassword;
+        return password;
     }
 
     public void setUserPassword(String userPassword) {
-        this.userPassword = userPassword;
+        this.password = userPassword;
     }
 
     public Role getRole() {
