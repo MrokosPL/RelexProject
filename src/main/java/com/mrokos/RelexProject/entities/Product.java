@@ -9,45 +9,45 @@ import java.time.LocalDateTime;
 public class Product {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer id;
-    private String itemname;
-    private Double itemQuantity;
-    private LocalDateTime createdAt;
-    private LocalDateTime changedAt;
+    private Long id;
+    private String itemName;
+    private Double quantity;
+    private LocalDateTime dateCreated;
+    private LocalDateTime dateChanged;
 
-    public Integer getId() {
+    public Long getId() {
         return id;
     }
 
-    public void setId(Integer id) {
+    public void setId(Long id) {
         this.id = id;
     }
 
     public String getItemname() {
-        return itemname;
+        return itemName;
     }
 
     public void setItemname(String itemname) {
-        this.itemname = itemname;
+        this.itemName = itemname;
     }
 
-    public Double getItemQuantity() {
-        return itemQuantity;
+    public Double getQuantity() {
+        return quantity;
     }
 
-    public void setItemQuantity(Double itemQuantity) {
-        this.itemQuantity = itemQuantity;
+    public void setQuantity(Double quantity) {
+        this.quantity = quantity;
     }
 
     public void setCreatedAt(LocalDateTime createdAt) {
-        this.createdAt = createdAt;
+        this.dateCreated = createdAt;
     }
 
     public LocalDateTime getChangedAt() {
-        return changedAt;
+        return dateChanged;
     }
 
     public void setChangedAt(LocalDateTime changedAt) {
-        this.changedAt = changedAt;
+        this.dateChanged = changedAt;
     }
 }
