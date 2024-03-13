@@ -51,5 +51,6 @@ public class UserService implements UserDetailsService {
         user.setRole(roleService.getUserRole());
         return userRepository.save(user);
     }
+    public
 }
 

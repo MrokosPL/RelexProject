@@ -16,6 +16,7 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
 
 import java.io.IOException;
+import java.util.stream.Collectors;
 
 @Component
 @Slf4j
@@ -29,7 +30,7 @@ public class JwtFilter extends OncePerRequestFilter {
 
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
-        String authHeader = request.getHeader("Authorisation");
+        String authHeader = request.getHeader("Authorization");
         String email = null;
         String token = null;
         if (authHeader != null && authHeader.startsWith("Bearer ")) {
@@ -47,7 +48,7 @@ public class JwtFilter extends OncePerRequestFilter {
             UsernamePasswordAuthenticationToken tkn = new UsernamePasswordAuthenticationToken(
                     email,
                     null,
-                    tokenUtils.getJwtRole(token).stream().map(SimpleGrantedAuthority::new).toList());
+                    tokenUtils.getJwtRole(token).stream().map(SimpleGrantedAuthority::new).collect(Collectors.toList()));
             SecurityContextHolder.getContext().setAuthentication(tkn);
         }
         filterChain.doFilter(request, response);

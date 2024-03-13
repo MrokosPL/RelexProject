@@ -6,12 +6,14 @@ import com.mrokos.RelexProject.entities.Product;
 import com.mrokos.RelexProject.exceptions.AppExeption;
 import com.mrokos.RelexProject.repositories.ProductRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.RequestBody;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Service
 public class ProductService {
@@ -33,5 +35,16 @@ public class ProductService {
         product.setChangedAt(LocalDateTime.now());
         productRepository.save(product);
         return ResponseEntity.ok(new ProductResponseDto(product.getId(), product.getItemname(), product.getQuantity()));
+    }
+    public List<Product> showAllProducts (){
+        return productRepository.findAll(Sort.by("itemName"));
+    }
+
+    public ResponseEntity<?> deleteProduct(Long id){
+        if(!productRepository.findById(id).isPresent()){
+            return new ResponseEntity<>( new AppExeption(HttpStatus.NOT_FOUND.value(), "Такого товара не существует"), HttpStatus.BAD_REQUEST);
+        }
+            productRepository.deleteById(id);
+            return ResponseEntity.ok("Продукт удалён");
     }
 }

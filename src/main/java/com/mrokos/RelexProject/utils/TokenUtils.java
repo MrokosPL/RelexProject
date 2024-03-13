@@ -13,6 +13,7 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 @Component
 public class TokenUtils {
@@ -23,8 +24,8 @@ public class TokenUtils {
 
     public String tokenGeneration(UserDetails userDetails){
         Map<String, Object> claims = new HashMap<>();
-        List<String> roleList = userDetails.getAuthorities().stream().map(GrantedAuthority::getAuthority).toList();
-        claims.put("permissions", roleList);
+        List<String> roleList = userDetails.getAuthorities().stream().map(GrantedAuthority::getAuthority).collect(Collectors.toList());
+        claims.put("roles", roleList);
         Date date = new Date();
         Date tokenExpirationDate = new Date(date.getTime() + tokenLifetime.toMillis());
         return Jwts.builder()
@@ -42,6 +43,6 @@ public class TokenUtils {
         return getClaims(token).getSubject();
     }
     public List<String> getJwtRole(String token){
-        return getClaims(token).get("permissions", List.class);
+        return getClaims(token).get("roles", List.class);
     }
 }
