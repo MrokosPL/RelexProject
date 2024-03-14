@@ -3,10 +3,7 @@ package com.mrokos.RelexProject.dtos;
 import lombok.Data;
 
 @Data
-public class ProductAddDto {
-
+public class ProductUpdateDto {
     private String itemName;
     private Double quantity;
-    private String measurement;
-
 }

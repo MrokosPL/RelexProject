@@ -2,18 +2,20 @@ package com.mrokos.RelexProject.entities;
 
 import jakarta.persistence.*;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 @Entity
-@Table(name="products")
+@Table(name = "products")
 public class Product {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private String itemName;
     private Double quantity;
-    private LocalDateTime dateCreated;
-    private LocalDateTime dateChanged;
+    private String measurement;
+    private LocalDate dateCreated;
+    private LocalDate dateChanged;
 
     public Long getId() {
         return id;
@@ -39,15 +41,23 @@ public class Product {
         this.quantity = quantity;
     }
 
-    public void setCreatedAt(LocalDateTime createdAt) {
+    public void setCreatedAt(LocalDate createdAt) {
         this.dateCreated = createdAt;
     }
 
-    public LocalDateTime getChangedAt() {
+    public LocalDate getChangedAt() {
         return dateChanged;
     }
 
-    public void setChangedAt(LocalDateTime changedAt) {
+    public void setChangedAt(LocalDate changedAt) {
         this.dateChanged = changedAt;
+    }
+
+    public String getMeasurement() {
+        return measurement;
+    }
+
+    public void setMeasurement(String measurement) {
+        this.measurement = measurement;
     }
 }

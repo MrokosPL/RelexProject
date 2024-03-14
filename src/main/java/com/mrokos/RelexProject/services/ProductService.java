@@ -12,6 +12,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.RequestBody;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
 
@@ -25,23 +26,24 @@ public class ProductService {
     }
 
     public ResponseEntity<?> addProduct(@RequestBody ProductAddDto productAddDto){
-        if(productRepository.findByItemName(productAddDto.getItemName())!= null){
+        if(productRepository.existsByItemName(productAddDto.getItemName())){
             return new ResponseEntity<>(new AppExeption(HttpStatus.BAD_REQUEST.value(), "Такой товар уже существует"), HttpStatus.BAD_REQUEST);
         }
         Product product = new Product();
         product.setItemname(productAddDto.getItemName());
         product.setQuantity(productAddDto.getQuantity());
-        product.setCreatedAt(LocalDateTime.now());
-        product.setChangedAt(LocalDateTime.now());
+        product.setMeasurement(productAddDto.getMeasurement());
+        product.setCreatedAt(LocalDate.now());
+        product.setChangedAt(LocalDate.now());
         productRepository.save(product);
-        return ResponseEntity.ok(new ProductResponseDto(product.getId(), product.getItemname(), product.getQuantity()));
+        return ResponseEntity.ok(new ProductResponseDto(product.getId(), product.getItemname(), product.getQuantity(), product.getMeasurement()));
     }
     public List<Product> showAllProducts (){
         return productRepository.findAll(Sort.by("itemName"));
     }
 
     public ResponseEntity<?> deleteProduct(Long id){
-        if(!productRepository.findById(id).isPresent()){
+        if(!productRepository.existsById(id)){
             return new ResponseEntity<>( new AppExeption(HttpStatus.NOT_FOUND.value(), "Такого товара не существует"), HttpStatus.BAD_REQUEST);
         }
             productRepository.deleteById(id);

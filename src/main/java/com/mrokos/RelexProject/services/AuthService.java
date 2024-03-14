@@ -40,7 +40,7 @@ public class AuthService {
     }
 
     public ResponseEntity<?> registration (UserDto userDto){
-        if(!userDto.getUserPassword().equals(userDto.getConfirmPassword())){
+        if(!userDto.getPassword().equals(userDto.getConfirmPassword())){
             return new ResponseEntity<>(new AppExeption(HttpStatus.BAD_REQUEST.value(),"Пароли не совпадают"), HttpStatus.UNAUTHORIZED);
         }
         if(userService.findByEmail(userDto.getEmail()).isPresent()){
