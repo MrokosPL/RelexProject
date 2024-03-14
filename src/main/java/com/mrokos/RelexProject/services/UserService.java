@@ -1,6 +1,7 @@
 package com.mrokos.RelexProject.services;
 
 import com.mrokos.RelexProject.config.ApiMapper;
+import com.mrokos.RelexProject.dtos.ShowStatDto;
 import com.mrokos.RelexProject.dtos.UserDto;
 import com.mrokos.RelexProject.dtos.UserResponseDto;
 import com.mrokos.RelexProject.entities.User;
@@ -68,6 +69,13 @@ public class UserService implements UserDetailsService {
         List<User> users = userRepository.findAll(Sort.by("username"));
         return users.stream().map(ApiMapper.INSTANCE::userToUserResponseDto).collect(Collectors.toList());
     }
-
+    public Long getUserId(String email){
+     try {
+         return findByEmail(email).get().getId();
+     }
+     catch (Exception e) {
+         return null;
+     }
+    }
 }
 

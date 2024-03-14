@@ -32,8 +32,6 @@ public class SecurityConfig {
                 .csrf(AbstractHttpConfigurer::disable)
                 .cors(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests(auth-> auth
-                        .requestMatchers("/add").hasRole("OWNER")
-                        .requestMatchers("/products").hasRole("OWNER")
                         .anyRequest().permitAll())
                 .sessionManagement(session-> session
                         .sessionCreationPolicy(SessionCreationPolicy.STATELESS))

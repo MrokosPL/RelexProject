@@ -2,18 +2,20 @@ package com.mrokos.RelexProject.controllers;
 
 
 import com.mrokos.RelexProject.dtos.ProductAddDto;
+import com.mrokos.RelexProject.dtos.ProductUpdateDto;
 import com.mrokos.RelexProject.entities.Product;
 import com.mrokos.RelexProject.services.ProductService;
+import com.mrokos.RelexProject.services.StatService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
 @RestController
-@RequestMapping("/products")
+@RequestMapping("/product")
 public class ProductController {
-
     private final ProductService productService;
 
     @Autowired
@@ -21,19 +23,27 @@ public class ProductController {
         this.productService = productService;
     }
 
-    @PostMapping()
+    @PostMapping
+    @PreAuthorize("hasRole('OWNER')")
     public ResponseEntity<?> addProduct(@RequestBody ProductAddDto productAddDto) {
         return productService.addProduct(productAddDto);
     }
 
-    @GetMapping()
+    @GetMapping
+    @PreAuthorize("hasRole('OWNER')")
     public List<Product> showAllProducts() {
         return productService.showAllProducts();
     }
 
     @DeleteMapping("/{id}")
+    @PreAuthorize("hasRole('OWNER')")
     public ResponseEntity<?> deleteProduct(@PathVariable Long id) {
         return productService.deleteProduct(id);
+    }
+    @PutMapping
+    @PreAuthorize("hasRole('STAFF')")
+    public ResponseEntity<?> updateProduct(@RequestBody ProductUpdateDto productUpdateDto, @RequestHeader("Authorization") String token){
+        return ResponseEntity.ok(productService.updateProduct(productUpdateDto, token));
     }
 
 }

@@ -4,11 +4,13 @@ package com.mrokos.RelexProject.controllers;
 import com.mrokos.RelexProject.dtos.UserResponseDto;
 import com.mrokos.RelexProject.services.UserService;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
 @RestController
+@PreAuthorize("hasRole('OWNER')")
 @RequestMapping("/user")
 public class UserController {
     private final UserService userService;
@@ -16,7 +18,6 @@ public class UserController {
     public UserController(UserService userService) {
         this.userService = userService;
     }
-
 
     @DeleteMapping("/{id}")
     public ResponseEntity<?> deleteUser (@PathVariable Long id){
