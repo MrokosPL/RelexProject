@@ -20,3 +20,4 @@
 
 ##
 Dump базы данных в репозитории
+Логин и пароль в application.properties
