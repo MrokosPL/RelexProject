@@ -10,6 +10,8 @@ import java.util.List;
 @Repository
 public interface StatRepository extends JpaRepository<Statistic, Long> {
     List<Statistic> findAllByUserId(Long id);
+
     List<Statistic> findByCreatedAt(LocalDate startOf);
+
     List<Statistic> findByCreatedAtBetween(LocalDate startDay, LocalDate endDay);
 }

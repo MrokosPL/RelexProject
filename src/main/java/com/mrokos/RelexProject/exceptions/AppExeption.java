@@ -1,7 +1,9 @@
 package com.mrokos.RelexProject.exceptions;
 
 import lombok.Data;
+
 import java.util.Date;
+
 @Data
 public class AppExeption {
     private int status;

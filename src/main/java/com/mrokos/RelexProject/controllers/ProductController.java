@@ -5,7 +5,6 @@ import com.mrokos.RelexProject.dtos.ProductAddDto;
 import com.mrokos.RelexProject.dtos.ProductUpdateDto;
 import com.mrokos.RelexProject.entities.Product;
 import com.mrokos.RelexProject.services.ProductService;
-import com.mrokos.RelexProject.services.StatService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;

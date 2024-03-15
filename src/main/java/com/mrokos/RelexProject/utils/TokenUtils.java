@@ -22,7 +22,7 @@ public class TokenUtils {
     @Value("${tokenlifetime}")
     private Duration tokenLifetime;
 
-    public String tokenGeneration(UserDetails userDetails){
+    public String tokenGeneration(UserDetails userDetails) {
         Map<String, Object> claims = new HashMap<>();
         List<String> roleList = userDetails.getAuthorities().stream().map(GrantedAuthority::getAuthority).collect(Collectors.toList());
         claims.put("roles", roleList);
@@ -35,14 +35,16 @@ public class TokenUtils {
                 .setExpiration(tokenExpirationDate)
                 .signWith(SignatureAlgorithm.HS256, secret).compact();
     }
-    private Claims getClaims (String token){
+
+    private Claims getClaims(String token) {
         return Jwts.parser().setSigningKey(secret).parseClaimsJws(token).getBody();
     }
 
-    public String getJwtMail(String token){
+    public String getJwtMail(String token) {
         return getClaims(token).getSubject();
     }
-    public List<String> getJwtRole(String token){
+
+    public List<String> getJwtRole(String token) {
         return getClaims(token).get("roles", List.class);
     }
 }

@@ -10,5 +10,6 @@ import java.util.Optional;
 public interface ProductRepository extends JpaRepository<Product, Long> {
 
     boolean existsByItemName(String itemName);
+
     Optional<Product> findByItemName(String itemName);
 }

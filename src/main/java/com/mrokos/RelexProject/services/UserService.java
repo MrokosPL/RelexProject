@@ -50,7 +50,8 @@ public class UserService implements UserDetailsService {
                 Collections.singletonList(new SimpleGrantedAuthority(user.getRole().getName())));
     }
 
-    public User createUser(UserDto userDto) {;
+    public User createUser(UserDto userDto) {
+        ;
         User user = new User();
         user.setUsername(userDto.getUsername());
         user.setEmail(userDto.getEmail());
@@ -58,24 +59,25 @@ public class UserService implements UserDetailsService {
         user.setRole(roleService.getUserRole());
         return userRepository.save(user);
     }
-    public void deleteById (Long id){
-        if(!userRepository.existsById(id)){
+
+    public void deleteById(Long id) {
+        if (!userRepository.existsById(id)) {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Пользователь с таким id не найден");
         }
         userRepository.deleteById(id);
     }
 
-    public List<UserResponseDto> showAllUsers (){
+    public List<UserResponseDto> showAllUsers() {
         List<User> users = userRepository.findAll(Sort.by("username"));
         return users.stream().map(ApiMapper.INSTANCE::userToUserResponseDto).collect(Collectors.toList());
     }
-    public Long getUserId(String email){
-     try {
-         return findByEmail(email).get().getId();
-     }
-     catch (Exception e) {
-         return null;
-     }
+
+    public Long getUserId(String email) {
+        try {
+            return findByEmail(email).get().getId();
+        } catch (Exception e) {
+            return null;
+        }
     }
 }
 

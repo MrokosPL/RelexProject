@@ -14,7 +14,7 @@ import java.util.List;
 
 @Service
 public class ExcelService {
-    public byte[] toExcel (List<Statistic> statistics) throws IOException {
+    public byte[] toExcel(List<Statistic> statistics) throws IOException {
         Workbook workbook = new XSSFWorkbook();
         Sheet sheet = workbook.createSheet("Статистика");
         Row headerRow = sheet.createRow(0);
@@ -25,7 +25,7 @@ public class ExcelService {
 
         int rowNum = 1;
         int totalQuantity = 0;
-        for(Statistic statistic:statistics){
+        for (Statistic statistic : statistics) {
             Row row = sheet.createRow(rowNum++);
             row.createCell(0).setCellValue(statistic.getUser().getUsername());
             row.createCell(1).setCellValue(statistic.getProduct().getItemname());
@@ -41,7 +41,7 @@ public class ExcelService {
         Row createdAt = sheet.createRow(rowNum);
         createdAt.createCell(0).setCellValue("Статистика на");
         createdAt.createCell(3).setCellValue(LocalDate.now().toString());
-        for (int i = 0; i < headerRow.getPhysicalNumberOfCells(); i++){
+        for (int i = 0; i < headerRow.getPhysicalNumberOfCells(); i++) {
             sheet.autoSizeColumn(i);
         }
         ByteArrayOutputStream outputStream = new ByteArrayOutputStream();

@@ -11,7 +11,7 @@ import org.springframework.stereotype.Service;
 public class RoleService {
     private final RoleRepository roleRepository;
 
-    public Role getUserRole(){
+    public Role getUserRole() {
         return roleRepository.findByName("ROLE_STAFF").get();
     }
 }
