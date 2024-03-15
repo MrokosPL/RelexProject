@@ -1,10 +1,10 @@
 package com.mrokos.RelexProject.services;
 
 import com.mrokos.RelexProject.config.ApiMapper;
-import com.mrokos.RelexProject.dtos.ShowStatDto;
 import com.mrokos.RelexProject.dtos.UserDto;
 import com.mrokos.RelexProject.dtos.UserResponseDto;
 import com.mrokos.RelexProject.entities.User;
+import com.mrokos.RelexProject.repositories.StatRepository;
 import com.mrokos.RelexProject.repositories.UserRepository;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,13 +25,14 @@ import java.util.stream.Collectors;
 
 @Service
 public class UserService implements UserDetailsService {
-
+    private final StatRepository statRepository;
     private final UserRepository userRepository;
     private final RoleService roleService;
     private final PasswordEncoder passwordEncoder;
 
     @Autowired
-    public UserService(UserRepository userRepository, RoleService roleService, PasswordEncoder passwordEncoder) {
+    public UserService(StatRepository statRepository, UserRepository userRepository, RoleService roleService, PasswordEncoder passwordEncoder) {
+        this.statRepository = statRepository;
         this.userRepository = userRepository;
         this.roleService = roleService;
         this.passwordEncoder = passwordEncoder;
@@ -46,7 +47,7 @@ public class UserService implements UserDetailsService {
     public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
         User user = findByEmail(email).orElseThrow(() -> new UsernameNotFoundException(String.format("Пользователь с такой почтой не найден")));
         return new org.springframework.security.core.userdetails.User(user.getEmail(),
-                user.getUserPassword(),
+                user.getPassword(),
                 Collections.singletonList(new SimpleGrantedAuthority(user.getRole().getName())));
     }
 
@@ -55,15 +56,17 @@ public class UserService implements UserDetailsService {
         User user = new User();
         user.setUsername(userDto.getUsername());
         user.setEmail(userDto.getEmail());
-        user.setUserPassword(passwordEncoder.encode(userDto.getPassword()));
+        user.setPassword(passwordEncoder.encode(userDto.getPassword()));
         user.setRole(roleService.getUserRole());
         return userRepository.save(user);
     }
 
+    @Transactional
     public void deleteById(Long id) {
         if (!userRepository.existsById(id)) {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Пользователь с таким id не найден");
         }
+        statRepository.deleteAllByUserId(id);
         userRepository.deleteById(id);
     }
 

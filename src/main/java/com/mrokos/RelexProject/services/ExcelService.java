@@ -28,7 +28,7 @@ public class ExcelService {
         for (Statistic statistic : statistics) {
             Row row = sheet.createRow(rowNum++);
             row.createCell(0).setCellValue(statistic.getUser().getUsername());
-            row.createCell(1).setCellValue(statistic.getProduct().getItemname());
+            row.createCell(1).setCellValue(statistic.getProduct().getItemName());
             row.createCell(2).setCellValue(statistic.getCreatedAt().toString());
             row.createCell(3).setCellValue(statistic.getProducedQuantity());
             totalQuantity += statistic.getProducedQuantity();

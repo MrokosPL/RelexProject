@@ -17,7 +17,7 @@ import java.time.LocalDate;
 import java.util.List;
 
 @RestController
-@RequestMapping("/update")
+@RequestMapping("/statistic")
 public class StatController {
     private final ExcelService excelService;
     private final UserService userService;

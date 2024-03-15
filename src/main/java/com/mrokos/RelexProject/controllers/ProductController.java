@@ -40,7 +40,7 @@ public class ProductController {
         return productService.deleteProduct(id);
     }
     @PutMapping
-    @PreAuthorize("hasRole('STAFF')")
+    @PreAuthorize("Authenticated")
     public ResponseEntity<?> updateProduct(@RequestBody ProductUpdateDto productUpdateDto, @RequestHeader("Authorization") String token){
         return ResponseEntity.ok(productService.updateProduct(productUpdateDto, token));
     }

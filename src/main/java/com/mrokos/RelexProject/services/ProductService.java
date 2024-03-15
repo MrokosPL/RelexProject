@@ -10,6 +10,7 @@ import com.mrokos.RelexProject.exceptions.AppExeption;
 import com.mrokos.RelexProject.repositories.ProductRepository;
 import com.mrokos.RelexProject.repositories.StatRepository;
 import com.mrokos.RelexProject.utils.TokenUtils;
+import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
@@ -42,23 +43,25 @@ public class ProductService {
             return new ResponseEntity<>(new AppExeption(HttpStatus.BAD_REQUEST.value(), "Такой товар уже существует"), HttpStatus.BAD_REQUEST);
         }
         Product product = new Product();
-        product.setItemname(productAddDto.getItemName());
+        product.setItemName(productAddDto.getItemName());
         product.setQuantity(productAddDto.getQuantity());
         product.setMeasurement(productAddDto.getMeasurement());
-        product.setCreatedAt(LocalDate.now());
-        product.setChangedAt(LocalDate.now());
+        product.setDateCreated(LocalDate.now());
+        product.setDateChanged(LocalDate.now());
         productRepository.save(product);
-        return ResponseEntity.ok(new ProductResponseDto(product.getId(), product.getItemname(), product.getQuantity(), product.getMeasurement()));
+        return ResponseEntity.ok(new ProductResponseDto(product.getId(), product.getItemName(), product.getQuantity(), product.getMeasurement()));
     }
 
     public List<Product> showAllProducts() {
         return productRepository.findAll(Sort.by("itemName"));
     }
 
+    @Transactional
     public ResponseEntity<?> deleteProduct(Long id) {
         if (!productRepository.existsById(id)) {
             return new ResponseEntity<>(new AppExeption(HttpStatus.NOT_FOUND.value(), "Такого товара не существует"), HttpStatus.BAD_REQUEST);
         }
+        statRepository.deleteAllByProductId(id);
         productRepository.deleteById(id);
         return ResponseEntity.ok("Продукт удалён");
     }
@@ -67,7 +70,7 @@ public class ProductService {
         Product product = productRepository.findByItemName(productUpdateDto.getItemName())
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Товар с таким именем не существует"));
         product.setQuantity(product.getQuantity() + productUpdateDto.getQuantity());
-        product.setChangedAt(LocalDate.now());
+        product.setDateChanged(LocalDate.now());
         productRepository.save(product);
         Statistic statistic = new Statistic();
         String token = header.substring(7);
